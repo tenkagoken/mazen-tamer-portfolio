@@ -41,7 +41,7 @@ Reviewed: 2026-08-25 (Africa/Cairo)
 ## Remote release
 
 - [x] Created public repository `tenkagoken/mazen-tamer-portfolio` without generated starter files.
-- [x] Pushed updated candidate commit `177d223a3dce1ddcdaf7aee56894e2476379a998` to `main`.
+- [x] Pushed updated candidate commit `ce147b40d0516cb538df7b9d91e834bddee08970` to `main`.
 - [x] Selected GitHub Actions as the Pages source with HTTPS enforced on the default domain.
-- [x] Manually dispatched `Deploy portfolio to GitHub Pages`; [run #2](https://github.com/tenkagoken/mazen-tamer-portfolio/actions/runs/32892069556) completed successfully (build 1m 20s, deploy 8s).
-- [x] Opened the [final HTTPS site](https://tenkagoken.github.io/mazen-tamer-portfolio/) and repeated the live smoke: dash-free title rendered, standalone Journey navigation/section were absent, the engineering path appeared inside About, Languages spacing measured 12px, all seven repositories rendered, the LeBaladna dialog and repository URL passed, modal Escape and focus restoration passed, and the browser console remained clean.
+- [x] Manually dispatched `Deploy portfolio to GitHub Pages`; [run #3](https://github.com/tenkagoken/mazen-tamer-portfolio/actions/runs/32894005074) completed successfully (build 1m 0s, deploy 9s).
+- [x] Opened the [final HTTPS site](https://tenkagoken.github.io/mazen-tamer-portfolio/) and repeated the live smoke: the hero uses the requested semicolon; standalone Journey and Engineering path copy are absent; the seven-step horizontal profile timeline reveals progressively inside About; Languages spacing remains corrected; all seven repositories render in both Verified work and the archive; the LeBaladna and CPU Scheduler animations, detail dialogs, and four commit-pinned evidence links each pass; and the browser console remains clean.
