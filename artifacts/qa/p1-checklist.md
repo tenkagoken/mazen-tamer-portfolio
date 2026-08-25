@@ -41,7 +41,7 @@ Reviewed: 2026-08-25 (Africa/Cairo)
 ## Remote release
 
 - [x] Created public repository `tenkagoken/mazen-tamer-portfolio` without generated starter files.
-- [x] Pushed candidate commit `bc2447f2607b52683e52bb142b4cb7b30d4194c3` to `main`.
+- [x] Pushed updated candidate commit `177d223a3dce1ddcdaf7aee56894e2476379a998` to `main`.
 - [x] Selected GitHub Actions as the Pages source with HTTPS enforced on the default domain.
-- [x] Manually dispatched `Deploy portfolio to GitHub Pages`; [run #1](https://github.com/tenkagoken/mazen-tamer-portfolio/actions/runs/32886065424) completed successfully (build 57s, deploy 10s).
-- [x] Opened the [final HTTPS site](https://tenkagoken.github.io/mazen-tamer-portfolio/) and repeated the live smoke: six repositories rendered, requested featured/archive coverage present, modal Escape and focus restoration passed, résumé PDF loaded, and the browser console remained clean.
+- [x] Manually dispatched `Deploy portfolio to GitHub Pages`; [run #2](https://github.com/tenkagoken/mazen-tamer-portfolio/actions/runs/32892069556) completed successfully (build 1m 20s, deploy 8s).
+- [x] Opened the [final HTTPS site](https://tenkagoken.github.io/mazen-tamer-portfolio/) and repeated the live smoke: dash-free title rendered, standalone Journey navigation/section were absent, the engineering path appeared inside About, Languages spacing measured 12px, all seven repositories rendered, the LeBaladna dialog and repository URL passed, modal Escape and focus restoration passed, and the browser console remained clean.
