@@ -242,6 +242,31 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .platform-b { width: 24%; right: 13%; bottom: 33px; }
 .game-status { position: absolute; z-index: 4; left: 13px; right: 13px; bottom: 7px; display: flex; justify-content: space-between; color: #777c76; font: 7px "Cascadia Code", Consolas, monospace; }
 .game-status b { color: #b98397; letter-spacing: .7px; }
+.survey-dashboard { height: 224px; display: grid; grid-template-columns: 104px 1fr; }
+.survey-role-rail { display: flex; flex-direction: column; gap: 7px; padding: 22px 12px; border-right: 1px solid #333733; background: #1e211f; }
+.survey-role-rail small { margin-bottom: 5px; color: #6e746f; font: 7px "Cascadia Code", Consolas, monospace; letter-spacing: .08em; }
+.survey-role-rail span { padding: 8px; color: #aeb5ae; border: 1px solid #373c38; border-radius: 4px; font: 7px "Cascadia Code", Consolas, monospace; }
+.survey-role-rail span:nth-of-type(2) { color: #a7c3ce; border-color: #49606a; background: #252d30; }
+.survey-report { min-width: 0; padding: 16px 18px 12px; }
+.survey-stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.survey-stat-row span { padding: 8px 9px; border: 1px solid #373c38; border-radius: 4px; }
+.survey-stat-row small { display: block; margin-bottom: 4px; color: #6f7670; font: 6px "Cascadia Code", Consolas, monospace; }
+.survey-stat-row strong { color: #c7cac4; font: 600 15px Georgia, serif; }
+.survey-chart { height: 82px; display: flex; align-items: end; gap: 7px; margin-top: 12px; padding: 8px 12px 0; border: 1px solid #333733; border-radius: 4px; }
+.survey-chart i { flex: 1; max-width: 28px; background: #6e8b96; transform-origin: bottom; }
+.survey-chart i:nth-child(even) { background: #6f806f; }
+.survey-flow { display: flex; align-items: center; gap: 6px; margin-top: 10px; color: #747b75; font: 6px "Cascadia Code", Consolas, monospace; }
+.survey-flow i { color: #526058; font-style: normal; }
+.scheduler-stage { height: 154px; position: relative; margin: 16px 18px 0; padding-top: 2px; }
+.scheduler-lanes { display: grid; grid-template-columns: repeat(3,1fr); color: #777d78; font: 7px "Cascadia Code", Consolas, monospace; text-align: center; }
+.scheduler-path { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; position: absolute; inset: 28px 0 22px; }
+.scheduler-path i { border: 1px solid #383d39; border-radius: 5px; background: #1f2220; }
+.scheduler-path i:nth-child(2) { border-color: #52636b; background: #232a2d; }
+.scheduler-runner { width: 42px; height: 30px; display: grid; place-items: center; position: absolute; z-index: 2; left: calc(16.666% - 21px); top: 59px; color: #c4ced1; border: 1px solid #60747d; border-radius: 4px; background: #2a3438; font: 700 8px "Cascadia Code", Consolas, monospace; }
+.scheduler-queue { display: flex; gap: 5px; position: absolute; z-index: 2; left: 3%; bottom: 34px; }
+.scheduler-queue span { width: 29px; height: 22px; display: grid; place-items: center; color: #8a908b; border: 1px solid #3d423e; border-radius: 3px; background: #262926; font: 6px "Cascadia Code", Consolas, monospace; }
+.scheduler-algorithms { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; padding: 0 12px; }
+.scheduler-algorithms span { padding: 4px 6px; color: #858b86; border: 1px solid #353a36; border-radius: 3px; font: 6px "Cascadia Code", Consolas, monospace; }
 .project-info { padding: 27px 32px 30px; }
 .project-meta { display: flex; align-items: center; gap: 8px; color: var(--muted); font: 700 8px/1 "Cascadia Code", Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; }
 .project-meta > span { display: inline-flex; align-items: center; gap: 4px; }
@@ -351,25 +376,22 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .related-projects b { color: var(--blue); font: 700 8px "Cascadia Code", Consolas, monospace; }
 .skill-project-link { min-height: 44px; display: inline-flex; align-items: center; gap: 7px; margin-top: 10px; color: var(--foreground); font-size: 10px; font-weight: 750; }
 
-/* Engineering path merged into About */
-.about-engineering-path { margin-top: 88px; padding-top: 72px; border-top: 1px solid var(--border-strong); }
-.about-engineering-path-heading { max-width: 760px; margin-bottom: 52px; }
-.about-engineering-path-heading h3 { margin: 14px 0 15px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.5rem,5vw,4.5rem); font-weight: 400; line-height: 1; letter-spacing: -.045em; }
-.about-engineering-path-heading > p:last-child { max-width: 630px; margin: 0; color: var(--muted-strong); font-size: 1rem; line-height: 1.7; }
-.timeline { max-width: 960px; position: relative; margin-inline: auto; }
-.timeline::before, .timeline-progress { width: 1px; position: absolute; left: 172px; top: 0; bottom: 0; transform-origin: top; }
-.timeline::before { content: ""; background: var(--border); }
-.timeline-progress { background: var(--foreground); }
-.timeline-item { width: 100%; min-height: 142px; position: relative; margin: 0; padding: 0 0 0 212px; }
-.timeline-node { width: 38px; height: 38px; display: grid; place-items: center; position: absolute; left: 153px; right: auto; top: 1px; color: var(--muted); border: 1px solid var(--border-strong); border-radius: 50%; background: var(--background); }
-.timeline-node span { font: 700 7px "Cascadia Code", Consolas, monospace; }
-.timeline-item:not(.is-active) .timeline-node { opacity: .55; }
-.timeline-item.is-past .timeline-node { opacity: .78; }
-.timeline-item.is-active .timeline-node { color: var(--primary-foreground); border-color: var(--primary); background: var(--primary); }
-.timeline-card { max-width: 680px; padding: 0 0 29px; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; background: transparent; }
-.timeline-card small { color: var(--blue); font: 700 8px "Cascadia Code", Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; }
-.timeline-card h3 { margin: 9px 0 7px; font-family: Georgia, "Times New Roman", serif; font-size: 1.65rem; font-weight: 400; letter-spacing: -.03em; }
-.timeline-card p { max-width: 610px; margin: 0; color: var(--muted-strong); font-size: .95rem; line-height: 1.65; }
+/* Horizontal profile timeline */
+.profile-timeline { margin-top: 88px; padding-top: 72px; border-top: 1px solid var(--border-strong); }
+.profile-timeline-heading { max-width: 700px; margin-bottom: 46px; }
+.profile-timeline-heading h3 { margin: 14px 0 15px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.5rem,5vw,4.5rem); font-weight: 400; line-height: 1; letter-spacing: -.045em; }
+.profile-timeline-heading > p:last-child { max-width: 590px; margin: 0; color: var(--muted-strong); font-size: 1rem; line-height: 1.7; }
+.profile-timeline-viewport { overflow-x: auto; padding: 4px 0 16px; scrollbar-color: var(--border-strong) transparent; scrollbar-width: thin; }
+.profile-timeline-track { min-width: 1080px; display: grid; grid-template-columns: repeat(7,minmax(0,1fr)); gap: 13px; position: relative; padding-top: 2px; }
+.profile-timeline-line { height: 1px; position: absolute; z-index: 0; top: 19px; right: 18px; left: 18px; background: var(--border-strong); transform-origin: left; }
+.profile-timeline-item { min-width: 0; position: relative; z-index: 1; padding-right: 4px; }
+.profile-timeline-node { width: 36px; height: 36px; display: grid; place-items: center; color: var(--muted); border: 1px solid var(--border-strong); border-radius: 50%; background: var(--background); }
+.profile-timeline-node span { font: 700 7px "Cascadia Code", Consolas, monospace; }
+.profile-timeline-item:first-of-type .profile-timeline-node { color: var(--primary-foreground); border-color: var(--primary); background: var(--primary); }
+.profile-timeline-card { margin-top: 18px; padding: 17px 12px 0 0; border-top: 1px solid var(--border); }
+.profile-timeline-card small { color: var(--blue); font: 700 7px/1.4 "Cascadia Code", Consolas, monospace; letter-spacing: .07em; text-transform: uppercase; }
+.profile-timeline-card h3 { margin: 9px 0 8px; font-family: Georgia, "Times New Roman", serif; font-size: 1.22rem; font-weight: 400; line-height: 1.18; letter-spacing: -.025em; }
+.profile-timeline-card p { margin: 0; color: var(--muted-strong); font-size: .78rem; line-height: 1.6; }
 
 /* Contact */
 .contact-section { padding-bottom: 88px; }
@@ -506,6 +528,13 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .library-entities span { padding: 3px; font-size: 5px; }
   .windows-game-scene { height: 170px; }
   .game-status span:last-child { display: none; }
+  .survey-dashboard { height: 199px; grid-template-columns: 84px 1fr; }
+  .survey-role-rail { padding: 16px 8px; }
+  .survey-report { padding: 12px 10px 8px; }
+  .survey-stat-row { gap: 5px; }
+  .survey-stat-row span { padding: 7px 6px; }
+  .survey-flow { gap: 4px; }
+  .scheduler-stage { margin-inline: 10px; }
   .archive-header { align-items: flex-start; margin-top: 62px; }
   .archive-header > span { margin-top: 7px; }
   .project-filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
@@ -530,13 +559,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .skill-grid button { min-height: 60px; }
   .skill-context { padding: 25px 18px; }
   .related-projects { grid-template-columns: 1fr; }
-  .about-engineering-path { margin-top: 62px; padding-top: 54px; }
-  .about-engineering-path-heading { margin-bottom: 38px; }
-  .timeline::before, .timeline-progress { left: 18px; }
-  .timeline-item { min-height: 132px; padding-left: 54px; }
-  .timeline-node { width: 36px; height: 36px; left: 0; }
-  .timeline-card { padding-bottom: 24px; }
-  .timeline-card h3 { font-size: 1.45rem; }
+  .profile-timeline { margin-top: 62px; padding-top: 54px; }
+  .profile-timeline-heading { margin-bottom: 36px; }
+  .profile-timeline-track { min-width: 1050px; }
   .contact-shell { gap: 24px; padding-block: 34px; }
   .contact-copy h2 { font-size: 3rem; }
   .contact-actions > a, .contact-actions > button { grid-template-columns: 40px minmax(0,1fr) auto; }

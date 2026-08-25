@@ -55,7 +55,7 @@ export function Hero({ documentVisible }: { documentVisible: boolean }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25, duration: 0.6 }}
         >
-          I’m {profile.displayName} — a CS undergraduate building across algorithms, software design,
+          I’m {profile.displayName}; a CS undergraduate building across algorithms, software design,
           low-level systems, and game engineering.
         </motion.p>
 

@@ -1,6 +1,5 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { engineeringPath, featuredProjects, languages, profile } from '../data/portfolio'
+import { motion, type Variants } from 'framer-motion'
+import { featuredProjects, languages, profile, profileTimeline } from '../data/portfolio'
 import { SectionHeading } from './SectionHeading'
 
 const proofItems = [
@@ -11,9 +10,17 @@ const proofItems = [
   { label: 'Current focus', value: 'Software engineering internships', note: 'Algorithms, systems, and product-minded development' },
 ]
 
-export function About() {
-  const [activeIndex, setActiveIndex] = useState(0)
+const timelineItems: Variants = {
+  hidden: {},
+  visible: { transition: { delayChildren: 0.18, staggerChildren: 0.14 } },
+}
 
+const timelineItem: Variants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+}
+
+export function About() {
   return (
     <section id="about" className="section-shell content-section" aria-labelledby="about-heading">
       <SectionHeading
@@ -55,43 +62,44 @@ export function About() {
         </motion.dl>
       </div>
 
-      <div className="about-engineering-path" aria-labelledby="about-engineering-path-heading">
+      <div className="profile-timeline" aria-labelledby="profile-timeline-heading">
         <motion.header
-          className="about-engineering-path-heading"
+          className="profile-timeline-heading"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
         >
-          <p className="eyebrow"><span aria-hidden="true">//</span> Engineering path</p>
-          <h3 id="about-engineering-path-heading">One layer deeper with every build.</h3>
-          <p>A degree in progress, connected by projects that move from interfaces toward the systems underneath.</p>
+          <p className="eyebrow"><span aria-hidden="true">//</span> Profile timeline</p>
+          <h3 id="profile-timeline-heading">Built one layer at a time.</h3>
+          <p>Study, teaching, and source-visible projects arranged as one gradual progression.</p>
         </motion.header>
 
-        <div className="timeline">
+        <div className="profile-timeline-viewport">
           <motion.div
-            className="timeline-progress"
-            initial={false}
-            animate={{ scaleY: (activeIndex + 1) / engineeringPath.length }}
-            transition={{ duration: .5, ease: 'easeOut' }}
-          />
-          {engineeringPath.map((item, index) => (
-            <motion.article
-              key={item.title}
-              className={`timeline-item ${index === activeIndex ? 'is-active' : ''} ${index < activeIndex ? 'is-past' : ''}`}
-              initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.45 }}
-              transition={{ delay: index * 0.08 }}
-              onViewportEnter={() => setActiveIndex(index)}
-            >
-              <div className="timeline-node"><span>{String(index + 1).padStart(2, '0')}</span></div>
-              <div className="timeline-card">
-                <small>{item.label}</small>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </div>
-            </motion.article>
-          ))}
+            className="profile-timeline-track"
+            variants={timelineItems}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            <motion.div
+              className="profile-timeline-line"
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 1.15, ease: [0.16, 1, 0.3, 1] }}
+            />
+            {profileTimeline.map((item, index) => (
+              <motion.article key={item.title} className="profile-timeline-item" variants={timelineItem}>
+                <div className="profile-timeline-node"><span>{String(index + 1).padStart(2, '0')}</span></div>
+                <div className="profile-timeline-card">
+                  <small>{item.label}</small>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </div>
+              </motion.article>
+            ))}
+          </motion.div>
         </div>
       </div>
     </section>

@@ -43,7 +43,7 @@ export function Projects({ documentVisible = true }: { documentVisible?: boolean
       <SectionHeading
         id="projects-heading"
         eyebrow="01 / Verified work"
-        title="Five projects, traced back to the source."
+        title="Seven projects, traced back to the source."
         copy={`${projects.length} selected public repositories spanning algorithms, C# software design, low-level systems, web interfaces, and game development. Featured claims link to the exact commit and file that supports them.`}
       />
 

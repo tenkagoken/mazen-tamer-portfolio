@@ -63,7 +63,7 @@ export interface Skill {
   projects: readonly ProjectId[]
 }
 
-export interface EngineeringPathEntry {
+export interface ProfileTimelineEntry {
   label: string
   title: string
   text: string
@@ -74,7 +74,7 @@ export interface PortfolioDataInput {
   profile: typeof rawProfile
   projects: readonly Project[]
   skillGroups: Readonly<Record<string, readonly Skill[]>>
-  engineeringPath: readonly EngineeringPathEntry[]
+  profileTimeline: readonly ProfileTimelineEntry[]
 }
 
 export interface EvidenceValidationFinding {
@@ -121,6 +121,8 @@ const REQUIRED_FEATURED_IDS: readonly ProjectId[] = [
   'exam-management',
   'library-management',
   'windows-game',
+  'lebaladna-survey',
+  'cpu-scheduler',
 ]
 const DENIED_REPOSITORIES = new Set([
   'knights-end',
@@ -233,14 +235,40 @@ const rawProjects: readonly Project[] = [
   {
     id: 'lebaladna-survey', repoName: 'lebaladnas-survey-helper', title: 'LeBaladna Survey Helper', shortTitle: 'LeBaladna Survey',
     primaryLanguage: 'PHP', languages: ['PHP', 'JavaScript', 'SQL', 'HTML', 'CSS'], technologies: ['PHP', 'MySQL', 'PDO', 'JavaScript', 'Chart.js', 'Role-Based Access Control'],
-    categories: ['Web', 'Software Engineering', 'Systems'], featured: false, accent: 'cyan',
+    categories: ['Web', 'Software Engineering', 'Systems'], featured: true, accent: 'cyan',
     summary: 'A role-based PHP and MySQL survey platform with questionnaire authoring, member responses, analytics dashboards, and CSV/PDF export.',
+    verifiedCommit: '4197ce0620330c6afffa39a492ddc5a48a8fddf7', // pragma: allowlist secret — public Git commit
+    claims: {
+      contribution: { id: 'survey-contribution', kind: 'contribution', text: 'Built admin, analyst, and member workflows for authoring surveys, assigning participants, collecting responses, and reviewing results.' },
+      decision: { id: 'survey-decision', kind: 'decision', text: 'Separated authentication, survey, and response concerns while centralizing PDO queries, role checks, CSRF verification, and session hardening.' },
+      result: { id: 'survey-result', kind: 'result', text: 'Delivered dynamic question building, saved responses, completion analytics, Chart.js visualizations, and CSV/PDF export paths.' },
+      limitation: { id: 'survey-limitation', kind: 'limitation', text: 'The repository targets a local PHP/MySQL setup, keeps environment values in a PHP config file, and does not include automated tests or deployment instructions.' },
+    },
+    evidence: [
+      { id: 'survey-auth', kind: 'source', label: 'Authentication and role flows', path: 'controllers/AuthController.php', supports: ['survey-contribution', 'survey-decision'] },
+      { id: 'survey-model', kind: 'source', label: 'Survey domain model', path: 'models/Survey.php', supports: ['survey-contribution', 'survey-decision', 'survey-result'] },
+      { id: 'survey-analytics', kind: 'source', label: 'Analytics dashboard', path: 'analyst/analytics.php', supports: ['survey-result'] },
+      { id: 'survey-config', kind: 'source', label: 'Local application configuration', path: 'config/config.php', supports: ['survey-limitation'] },
+    ],
   },
   {
     id: 'cpu-scheduler', repoName: 'cpu-scheduling-algorithm-simulation', title: 'CPU Scheduling Visualizer', shortTitle: 'CPU Scheduler',
     primaryLanguage: 'JavaScript', languages: ['JavaScript', 'HTML', 'CSS'], technologies: ['JavaScript', 'HTML', 'CSS', 'Process Scheduling'],
-    categories: ['Algorithms', 'Systems', 'Web'], featured: false, accent: 'violet',
-    summary: 'A browser-based archive project for comparing six CPU scheduling algorithms through metrics and animated process flow.',
+    categories: ['Algorithms', 'Systems', 'Web'], featured: true, accent: 'violet',
+    summary: 'A browser-based visualizer for comparing six CPU scheduling algorithms through metrics and animated process flow.',
+    verifiedCommit: '6096599a69ae12731cfb8bb243ab4f1f8ba7a032', // pragma: allowlist secret — public Git commit
+    claims: {
+      contribution: { id: 'scheduler-contribution', kind: 'contribution', text: 'Implemented FCFS, SJF, Priority, Round Robin, preemptive SJF, and preemptive Priority scheduling in browser-native JavaScript.' },
+      decision: { id: 'scheduler-decision', kind: 'decision', text: 'Separated process models and scheduling calculations from interface orchestration and DOM-based queue-to-CPU animation.' },
+      result: { id: 'scheduler-result', kind: 'result', text: 'Calculates per-process waiting and turnaround time, reports averages, compares non-Round-Robin results, and animates execution order.' },
+      limitation: { id: 'scheduler-limitation', kind: 'limitation', text: 'All processes are treated as immediately available, input validation is minimal, and the repository has no automated tests or technical README.' },
+    },
+    evidence: [
+      { id: 'scheduler-algorithms', kind: 'source', label: 'Scheduling algorithms', path: 'algorithms.js', supports: ['scheduler-contribution', 'scheduler-decision', 'scheduler-result', 'scheduler-limitation'] },
+      { id: 'scheduler-interface', kind: 'source', label: 'Simulation orchestration', path: 'script.js', supports: ['scheduler-decision', 'scheduler-result', 'scheduler-limitation'] },
+      { id: 'scheduler-animation', kind: 'source', label: 'Process animation', path: 'animation.js', supports: ['scheduler-decision', 'scheduler-result'] },
+      { id: 'scheduler-page', kind: 'source', label: 'Visualizer interface', path: 'index.html', supports: ['scheduler-contribution'] },
+    ],
   },
 ]
 
@@ -291,7 +319,7 @@ const rawSkillGroups = {
   ],
 } satisfies Record<string, readonly Skill[]>
 
-const rawEngineeringPath: readonly EngineeringPathEntry[] = [
+const rawProfileTimeline: readonly ProfileTimelineEntry[] = [
   { label: 'Foundation', title: 'Computer Science Degree', text: `Studying at ${rawProfile.university}. Expected graduation: ${rawProfile.graduation}.` },
   { label: 'Experience · 2023–2024', title: 'IGCSE Mathematics Tutor', text: 'Taught O Level mathematics through structured explanations and step-by-step problem solving.' },
   { label: 'Algorithms', title: 'Compression & Scheduling', text: 'Implemented Huffman coding in C++ and six CPU scheduling simulations in JavaScript.', projects: ['huffman', 'cpu-scheduler'] },
@@ -379,13 +407,8 @@ export function validatePortfolioData(data: PortfolioDataInput): readonly Eviden
 
   const featuredIds = data.projects.filter((project) => project.featured).map((project) => project.id)
   if (featuredIds.length !== REQUIRED_FEATURED_IDS.length || REQUIRED_FEATURED_IDS.some((id) => !featuredIds.includes(id))) {
-    addFinding(findings, 'featured set', 'projects', `exactly these five featured IDs: ${REQUIRED_FEATURED_IDS.join(', ')}`)
+    addFinding(findings, 'featured set', 'projects', `exactly these seven featured IDs: ${REQUIRED_FEATURED_IDS.join(', ')}`)
   }
-  const scheduler = data.projects.find((project) => project.id === 'cpu-scheduler')
-  if (!scheduler || scheduler.featured) addFinding(findings, 'archive set', 'cpu-scheduler', 'a present, non-featured archive project')
-  const survey = data.projects.find((project) => project.id === 'lebaladna-survey')
-  if (!survey || survey.featured) addFinding(findings, 'archive set', 'lebaladna-survey', 'a present, non-featured archive project')
-
   for (const [groupName, skills] of Object.entries(data.skillGroups)) {
     for (const skill of skills) {
       for (const projectId of skill.projects) {
@@ -393,18 +416,18 @@ export function validatePortfolioData(data: PortfolioDataInput): readonly Eviden
       }
     }
   }
-  for (const entry of data.engineeringPath) {
+  for (const entry of data.profileTimeline) {
     for (const projectId of entry.projects ?? []) {
-      if (!projectIds.has(projectId)) addFinding(findings, 'reference', `engineeringPath.${entry.title}`, 'only existing project IDs', projectId)
+      if (!projectIds.has(projectId)) addFinding(findings, 'reference', `profileTimeline.${entry.title}`, 'only existing project IDs', projectId)
     }
   }
-  if (DENIED_COPY.some((pattern) => pattern.test(JSON.stringify({ skillGroups: data.skillGroups, engineeringPath: data.engineeringPath })))) {
-    addFinding(findings, 'exclusion', 'skills or engineering path copy', 'no references to excluded projects')
+  if (DENIED_COPY.some((pattern) => pattern.test(JSON.stringify({ skillGroups: data.skillGroups, profileTimeline: data.profileTimeline })))) {
+    addFinding(findings, 'exclusion', 'skills or profile timeline copy', 'no references to excluded projects')
   }
   return findings
 }
 
-export function assertPortfolioIntegrity(data: PortfolioDataInput = { profile: rawProfile, projects: rawProjects, skillGroups: rawSkillGroups, engineeringPath: rawEngineeringPath }) {
+export function assertPortfolioIntegrity(data: PortfolioDataInput = { profile: rawProfile, projects: rawProjects, skillGroups: rawSkillGroups, profileTimeline: rawProfileTimeline }) {
   const findings = validatePortfolioData(data)
   if (findings.length) throw new EvidenceValidationError(findings)
   return data
@@ -430,7 +453,7 @@ export const projectFilters: readonly ('All' | ProjectCategory)[] = deepFreeze([
 ])
 export const skillGroups = deepFreeze(accepted.skillGroups)
 export type SkillCategory = keyof typeof skillGroups
-export const engineeringPath = deepFreeze(accepted.engineeringPath)
+export const profileTimeline = deepFreeze(accepted.profileTimeline)
 
 export const navigation = deepFreeze([
   { id: 'home', label: 'Home' },

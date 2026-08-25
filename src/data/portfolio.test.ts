@@ -2,10 +2,10 @@ import { describe, expect, it } from 'vitest'
 import {
   archiveProjects,
   assertPortfolioIntegrity,
-  engineeringPath,
   EvidenceValidationError,
   featuredProjects,
   profile,
+  profileTimeline,
   projectFilters,
   projects,
   skillGroups,
@@ -14,24 +14,25 @@ import {
 } from './portfolio'
 
 function mutablePortfolio(): PortfolioDataInput {
-  return structuredClone({ profile, projects, skillGroups, engineeringPath }) as PortfolioDataInput
+  return structuredClone({ profile, projects, skillGroups, profileTimeline }) as PortfolioDataInput
 }
 
 describe('portfolio evidence contracts', () => {
   it('accepts and deeply freezes the canonical data set', () => {
-    expect(validatePortfolioData({ profile, projects, skillGroups, engineeringPath })).toEqual([])
+    expect(validatePortfolioData({ profile, projects, skillGroups, profileTimeline })).toEqual([])
     expect(assertPortfolioIntegrity()).toBeDefined()
     expect(Object.isFrozen(projects)).toBe(true)
     expect(Object.isFrozen(featuredProjects[0].claims)).toBe(true)
     expect(Object.isFrozen(featuredProjects[0].evidence[0].supports)).toBe(true)
   })
 
-  it('exposes exactly five featured projects and two archive projects', () => {
+  it('exposes exactly seven featured projects and no unverified archive projects', () => {
     expect(projects).toHaveLength(7)
     expect(featuredProjects.map((project) => project.id)).toEqual([
       'huffman', 'cipher', 'exam-management', 'library-management', 'windows-game',
+      'lebaladna-survey', 'cpu-scheduler',
     ])
-    expect(archiveProjects.map((project) => project.id)).toEqual(['lebaladna-survey', 'cpu-scheduler'])
+    expect(archiveProjects).toEqual([])
     expect(featuredProjects.every((project) => /^[0-9a-f]{40}$/.test(project.verifiedCommit))).toBe(true)
     for (const project of featuredProjects) {
       expect(Object.keys(project.claims)).toEqual(['contribution', 'decision', 'result', 'limitation'])
@@ -47,7 +48,7 @@ describe('portfolio evidence contracts', () => {
       'C-windowsformapp-game',
       'lebaladnas-survey-helper',
     ]))
-    const searchable = JSON.stringify({ projects, skillGroups, engineeringPath }).toLowerCase()
+    const searchable = JSON.stringify({ projects, skillGroups, profileTimeline }).toLowerCase()
     expect(searchable).not.toContain('knights')
     expect(searchable).toContain('lebaladna')
     expect(searchable).toContain('survey helper')
@@ -55,7 +56,7 @@ describe('portfolio evidence contracts', () => {
     expect(searchable).toContain('mysql')
   })
 
-  it('derives filters and resolves every skill and engineering path reference', () => {
+  it('derives filters and resolves every skill and profile timeline reference', () => {
     const categories = new Set(projects.flatMap((project) => project.categories))
     categories.forEach((category) => expect(projectFilters).toContain(category))
 
@@ -63,7 +64,7 @@ describe('portfolio evidence contracts', () => {
     Object.values(skillGroups).flat().forEach((skill) => {
       skill.projects.forEach((projectId) => expect(projectIds.has(projectId)).toBe(true))
     })
-    engineeringPath.flatMap((entry) => entry.projects ?? []).forEach((projectId) => expect(projectIds.has(projectId)).toBe(true))
+    profileTimeline.flatMap((entry) => entry.projects ?? []).forEach((projectId) => expect(projectIds.has(projectId)).toBe(true))
   })
 
   it('groups commit, evidence, reference, and exclusion failures in one custom error', () => {

@@ -111,6 +111,51 @@ export function ProjectVisual({ id, documentVisible }: { id: ProjectId; document
     )
   }
 
+  if (id === 'lebaladna-survey') {
+    return (
+      <div ref={visualRef} className="project-visual survey-visual" aria-hidden="true">
+        <div className="visual-toolbar"><span>survey analytics · role workspace</span><span>PHP · MySQL · Chart.js</span></div>
+        <div className="survey-dashboard">
+          <div className="survey-role-rail"><small>ROLES</small><span>Admin</span><span>Analyst</span><span>Member</span></div>
+          <div className="survey-report">
+            <div className="survey-stat-row"><span><small>RESPONSES</small><strong>148</strong></span><span><small>COMPLETION</small><strong>84%</strong></span><span><small>QUESTIONS</small><strong>07</strong></span></div>
+            <div className="survey-chart">
+              {[42, 68, 51, 82, 63, 74].map((height, index) => (
+                <motion.i
+                  key={height}
+                  initial={{ scaleY: 0 }}
+                  animate={{ scaleY: 1 }}
+                  transition={shouldAnimate ? { delay: index * 0.08, duration: 0.45 } : { duration: 0 }}
+                  style={{ height: `${height}%` }}
+                />
+              ))}
+            </div>
+            <div className="survey-flow"><span>AUTHOR</span><i>→</i><span>ASSIGN</span><i>→</i><span>RESPOND</span><i>→</i><span>ANALYZE</span></div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (id === 'cpu-scheduler') {
+    return (
+      <div ref={visualRef} className="project-visual scheduler-visual" aria-hidden="true">
+        <div className="visual-toolbar"><span>algorithms.js · execution order</span><span>WT 4.25 · TAT 8.50</span></div>
+        <div className="scheduler-stage">
+          <div className="scheduler-lanes"><span>QUEUE</span><span>CPU</span><span>DONE</span></div>
+          <div className="scheduler-path"><i /><i /><i /></div>
+          <motion.b
+            className="scheduler-runner"
+            animate={shouldAnimate ? { x: ['0%', '235%', '470%'] } : { x: '235%' }}
+            transition={shouldAnimate ? { repeat: Infinity, duration: 2.8, times: [0, 0.48, 1], ease: 'easeInOut' } : { duration: 0 }}
+          >P1</motion.b>
+          <div className="scheduler-queue"><span>P2</span><span>P3</span><span>P4</span></div>
+        </div>
+        <div className="scheduler-algorithms"><span>FCFS</span><span>SJF</span><span>PRIORITY</span><span>ROUND ROBIN</span><span>PREEMPTIVE SJF</span><span>PREEMPTIVE PRIORITY</span></div>
+      </div>
+    )
+  }
+
   return (
     <div ref={visualRef} className="project-visual generic-visual" aria-hidden="true">
       <div className="visual-toolbar"><span>repository overview</span><span>source verified</span></div>

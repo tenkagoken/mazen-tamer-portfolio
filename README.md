@@ -1,6 +1,6 @@
 # Mazen Eladawy Software Engineering Portfolio
 
-An evidence-backed candidate portfolio built with React, TypeScript, Vite, Framer Motion, and Phosphor Icons. The site presents five featured projects as short technical briefings: contribution, technical decision, verified result, known limitation, and commit-pinned source evidence.
+An evidence-backed candidate portfolio built with React, TypeScript, Vite, Framer Motion, and Phosphor Icons. The site presents seven featured projects as short technical briefings: contribution, technical decision, verified result, known limitation, and commit-pinned source evidence.
 
 Production target: `https://tenkagoken.github.io/mazen-tamer-portfolio/`
 
@@ -8,8 +8,7 @@ Production target: `https://tenkagoken.github.io/mazen-tamer-portfolio/`
 
 The canonical data in `src/data/portfolio.ts` contains seven selected public repositories:
 
-- five featured, source-verified projects: Huffman Compression, Monoalphabetic Cipher, Examination Management System, Library Management System, and the C# Windows Forms Platformer;
-- two archive projects: LeBaladna Survey Helper and CPU Scheduling Visualizer.
+- seven featured, source-verified projects: Huffman Compression, Monoalphabetic Cipher, Examination Management System, Library Management System, the C# Windows Forms Platformer, LeBaladna Survey Helper, and CPU Scheduling Visualizer.
 
 Repository URLs derive from the GitHub username and repository name. Featured evidence URLs derive from a reviewed 40-character commit and a validated repository-relative path. The data validator runs during tests and before every Vite build.
 
@@ -36,7 +35,7 @@ npm run test:e2e
 
 ## Main source locations
 
-- Identity, projects, claims, evidence, skills, the About engineering path, and exclusions: `src/data/portfolio.ts`
+- Identity, projects, claims, evidence, skills, the About profile timeline, and exclusions: `src/data/portfolio.ts`
 - GitHub URL and evidence path resolution: `src/lib/github.ts`
 - Known Pages target and canonical URL: `src/config/site.ts`
 - Recruiter-facing sections: `src/components/`
