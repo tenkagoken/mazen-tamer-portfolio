@@ -8,9 +8,11 @@ import { Projects } from './components/Projects'
 import { Skills } from './components/Skills'
 import { BackToTop, Footer, ScrollProgress } from './components/SiteChrome'
 import { navigation } from './data/portfolio'
+import { useDocumentVisibility } from './hooks/useDocumentVisibility'
 
 function App() {
   const [activeSection, setActiveSection] = useState('home')
+  const documentVisible = useDocumentVisibility()
 
   useEffect(() => {
     const sections = navigation.map(({ id }) => document.getElementById(id)).filter(Boolean) as HTMLElement[]
@@ -33,9 +35,9 @@ function App() {
       <ScrollProgress />
       <Navbar activeSection={activeSection} />
       <main id="main-content">
-        <Hero />
+        <Hero documentVisible={documentVisible} />
+        <Projects documentVisible={documentVisible} />
         <About />
-        <Projects />
         <Skills />
         <Journey />
         <Contact />

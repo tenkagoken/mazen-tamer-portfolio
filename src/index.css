@@ -141,6 +141,13 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .fact-card small { margin-bottom: 5px; color: var(--muted); font: 700 8px/1.2 "Cascadia Code", Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; }
 .fact-card strong { color: var(--foreground); font-family: Georgia, "Times New Roman", serif; font-size: 1.8rem; font-weight: 400; letter-spacing: -.035em; }
 .fact-card > span { margin-top: 3px; color: var(--muted); font-size: 11px; }
+.proof-ledger { margin: 0; border-top: 1px solid var(--border-strong); }
+.proof-ledger > div { min-height: 82px; display: grid; grid-template-columns: minmax(145px,.65fr) minmax(0,1.35fr); align-items: center; gap: 24px; padding: 15px 4px; border-bottom: 1px solid var(--border); }
+.proof-ledger dt { display: flex; align-items: center; gap: 13px; color: var(--muted); font: 700 9px/1.4 "Cascadia Code", Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; }
+.proof-ledger dt span { color: var(--blue); }
+.proof-ledger dd { min-width: 0; margin: 0; }
+.proof-ledger dd strong { display: block; color: var(--foreground); font-family: Georgia, "Times New Roman", serif; font-size: 1.25rem; font-weight: 400; letter-spacing: -.025em; }
+.proof-ledger dd small { display: block; margin-top: 4px; color: var(--muted); font-size: .76rem; line-height: 1.45; }
 
 /* Projects */
 .project-subhead { display: flex; align-items: center; justify-content: space-between; margin: 0 0 12px; color: var(--muted); font: 700 8px/1 "Cascadia Code", Consolas, monospace; letter-spacing: .12em; text-transform: uppercase; }
@@ -164,6 +171,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .project-index button strong { display: block; margin-bottom: 3px; font-size: 11px; }
 .project-index button small { display: block; color: var(--muted); font-size: 8px; letter-spacing: .04em; text-transform: uppercase; }
 .project-index button i { padding: 3px 5px; color: var(--amber); border: 1px solid #dfd2b7; border-radius: 999px; font: 700 6px/1 "Cascadia Code", Consolas, monospace; font-style: normal; }
+.project-index button > svg { color: var(--muted); }
+.project-index button.active > svg { color: var(--project-accent); }
 .project-panel { min-width: 0; display: grid; grid-template-rows: 260px 1fr; }
 .project-visual { position: relative; min-width: 0; overflow: hidden; color: var(--visual-text); border-bottom: 1px solid #333733; background: var(--visual-bg); }
 .visual-toolbar { height: 36px; display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 3; padding: 0 14px; color: var(--visual-muted); border-bottom: 1px solid #333733; font: 8px/1 "Cascadia Code", Consolas, monospace; }
@@ -240,6 +249,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .status-chip i { width: 5px; height: 5px; border-radius: 50%; background: var(--amber); }
 .project-info h3 { margin: 12px 0 9px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 400; line-height: 1; letter-spacing: -.04em; }
 .project-info > p { max-width: 720px; margin: 0; color: var(--muted-strong); font-size: 1rem; line-height: 1.62; }
+.verified-chip { display: inline-flex; align-items: center; gap: 5px; color: var(--project-accent); }
 .concept-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 17px; }
 .concept-list span, .modal-tech span { padding: 5px 7px; color: var(--project-accent); border: 1px solid var(--border); border-radius: 999px; background: var(--card-muted); font: 700 8px "Cascadia Code", Consolas, monospace; }
 .project-actions { margin-top: 18px; }
@@ -281,6 +291,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .modal-heading h3 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.4rem,5vw,4.3rem); font-weight: 400; line-height: .96; letter-spacing: -.05em; }
 .modal-status { display: inline-flex; align-items: center; gap: 6px; flex: none; padding: 6px 8px; color: #956400; border: 1px solid #eadfbf; border-radius: 999px; background: #fbf3db; font: 700 7px "Cascadia Code", Consolas, monospace; text-transform: uppercase; }
 .modal-status i { width: 5px; height: 5px; border-radius: 50%; background: #956400; }
+.modal-status { color: var(--project-accent); border-color: var(--border-strong); background: var(--card-muted); }
+.modal-status.archive-status { color: var(--muted); }
 .modal-overview { max-width: 720px; margin: 22px 0 0; color: var(--muted-strong); font-size: 1rem; line-height: 1.7; }
 .modal-facts { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; margin-top: 24px; }
 .modal-facts > div { display: flex; align-items: center; gap: 10px; padding: 13px; color: var(--project-accent); border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card-muted); }
@@ -297,6 +309,19 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .highlight-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 7px; }
 .highlight-grid span { padding: 10px 11px; color: var(--muted-strong); border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card-muted); font-size: 10px; }
 .modal-tech { display: flex; flex-wrap: wrap; gap: 6px; }
+.modal-tech span { padding: 7px 9px; color: var(--muted-strong); border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card-muted); font-size: 9px; }
+.claim-ledger { display: grid; gap: 0; margin: 0; border-top: 1px solid var(--border); }
+.claim-ledger > div { display: grid; grid-template-columns: 150px 1fr; gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.claim-ledger dt { color: var(--project-accent); font: 700 8px/1.5 "Cascadia Code", Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; }
+.claim-ledger dd { margin: 0; color: var(--muted-strong); font-size: .9rem; line-height: 1.55; }
+.verified-commit { margin: 0 0 10px; color: var(--muted); font-size: .78rem; }
+.verified-commit code { color: var(--foreground); font-family: "Cascadia Code", Consolas, monospace; }
+.evidence-links { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; }
+.evidence-links a { min-height: 56px; display: grid; grid-template-columns: 20px 1fr auto; align-items: center; gap: 8px; padding: 9px 11px; color: var(--project-accent); border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card-muted); }
+.evidence-links a:hover { border-color: var(--border-strong); background: var(--card); }
+.evidence-links strong { display: block; overflow: hidden; color: var(--foreground); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.evidence-links small { display: block; margin-top: 3px; color: var(--muted); font: 700 7px "Cascadia Code", Consolas, monospace; text-transform: uppercase; }
+.archive-note { margin: 25px 0 0; padding: 13px 15px; color: var(--muted-strong); border-left: 2px solid var(--project-accent); background: var(--card-muted); font-size: .86rem; line-height: 1.6; }
 .evidence-note { margin: 25px 0 0; padding: 11px 13px; color: var(--muted); border-left: 2px solid var(--border-strong); background: var(--card-muted); font: 8px/1.6 "Cascadia Code", Consolas, monospace; }
 .modal-repo-link { margin-top: 25px; }
 
@@ -322,9 +347,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .skill-note, .learning-label { color: var(--muted); font-size: .9rem; line-height: 1.55; }
 .context-line { height: 1px; margin: 24px 0; background: var(--border); }
 .related-projects { display: flex; flex-direction: column; gap: 6px; }
-.related-projects a { min-height: 46px; display: grid; grid-template-columns: 24px 1fr auto; align-items: center; gap: 6px; padding: 8px 10px; color: var(--muted-strong); border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card); font-size: 10px; }
-.related-projects a:hover { color: var(--foreground); border-color: var(--border-strong); }
-.related-projects span { color: var(--blue); font: 700 8px "Cascadia Code", Consolas, monospace; }
+.related-projects > span { min-height: 46px; display: grid; grid-template-columns: 24px 1fr; align-items: center; gap: 6px; padding: 8px 10px; color: var(--muted-strong); border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card); font-size: 10px; }
+.related-projects b { color: var(--blue); font: 700 8px "Cascadia Code", Consolas, monospace; }
+.skill-project-link { min-height: 44px; display: inline-flex; align-items: center; gap: 7px; margin-top: 10px; color: var(--foreground); font-size: 10px; font-weight: 750; }
 
 /* Journey */
 .timeline { max-width: 960px; position: relative; margin-inline: auto; }
@@ -344,10 +369,20 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 /* Contact */
 .contact-section { padding-bottom: 88px; }
-.contact-shell { display: grid; grid-template-columns: .98fr 1.02fr; gap: 58px; align-items: start; padding: 48px 0; border-block: 1px solid var(--border-strong); }
+.contact-shell { max-width: 900px; display: grid; grid-template-columns: 1fr; gap: 34px; align-items: start; padding: 48px 0; border-block: 1px solid var(--border-strong); }
 .contact-copy { padding: 10px 0; }
 .contact-copy h2 { max-width: 620px; margin: 17px 0 18px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(3rem,5vw,5rem); font-weight: 400; line-height: .98; letter-spacing: -.05em; }
 .contact-copy > p:not(.eyebrow) { max-width: 550px; margin: 0; color: var(--muted-strong); line-height: 1.7; }
+.contact-actions { display: grid; border-top: 1px solid var(--border-strong); }
+.contact-actions > a, .contact-actions > button { width: 100%; min-height: 76px; display: grid; grid-template-columns: 42px minmax(0,1fr) auto; align-items: center; gap: 12px; padding: 12px 4px; color: var(--muted-strong); border: 0; border-bottom: 1px solid var(--border); background: transparent; text-align: left; cursor: pointer; }
+.contact-actions > a:hover, .contact-actions > button:hover { color: var(--foreground); background: var(--card); }
+.contact-actions > a > span:first-child, .contact-actions > button > span:first-child { width: 38px; height: 38px; display: grid; place-items: center; color: var(--blue); border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card); }
+.contact-actions > a > span:nth-child(2), .contact-actions > button > span:nth-child(2) { min-width: 0; overflow: hidden; font-size: 11px; font-weight: 750; text-overflow: ellipsis; white-space: nowrap; }
+.contact-actions small { display: block; margin-bottom: 4px; color: var(--muted); font: 700 7px "Cascadia Code", Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; }
+.contact-actions > button > span:last-child { color: var(--muted); font: 700 8px "Cascadia Code", Consolas, monospace; text-transform: uppercase; }
+.manual-copy { display: grid; gap: 7px; padding: 13px 4px; border-bottom: 1px solid var(--border); }
+.manual-copy > span { color: var(--muted); font: 700 8px "Cascadia Code", Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; }
+.manual-copy input { width: 100%; min-height: 44px; padding: 0 11px; color: var(--foreground); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--card); }
 .email-link { max-width: 510px; min-height: 66px; display: grid; grid-template-columns: 38px 1fr auto; align-items: center; gap: 11px; margin-top: 27px; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--card); }
 .email-link > span:first-child { width: 36px; height: 36px; display: grid; place-items: center; color: var(--blue); background: #eef4f7; border-radius: var(--radius-sm); }
 .email-link > span:nth-child(2) { font-size: 11px; font-weight: 750; }
@@ -425,6 +460,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .terminal-code { display: none; }
   .terminal-tabs { height: 24px; }
   .about-story { min-height: auto; padding-block: 25px; }
+  .proof-ledger > div { grid-template-columns: 112px minmax(0,1fr); gap: 13px; }
+  .proof-ledger dd strong { font-size: 1.1rem; }
   .languages-card { margin-top: 20px; }
   .languages-card > div { display: grid; grid-template-columns: 1fr 1fr; }
   .languages-card span { min-width: 0; }
@@ -437,7 +474,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .project-index::-webkit-scrollbar { display: none; }
   .project-index > p { display: none; }
   .project-index button { min-width: max-content; min-height: 46px; grid-template-columns: 18px 1fr; padding: 7px 11px; border: 1px solid var(--border); background: var(--card); }
-  .project-index button::before, .project-index button i, .project-index button small { display: none; }
+  .project-index button::before, .project-index button i, .project-index button small, .project-index button > svg { display: none; }
   .project-index button.active { border-color: var(--project-accent); }
   .project-panel { overflow: hidden; grid-template-rows: 235px 1fr; border: 1px solid var(--border-strong); border-radius: var(--radius-lg); background: var(--card); }
   .project-info { padding: 22px 18px 24px; }
@@ -481,6 +518,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .modal-heading { flex-direction: column; }
   .modal-heading h3 { font-size: 2.55rem; }
   .modal-facts, .modal-section ul, .highlight-grid { grid-template-columns: 1fr; }
+  .claim-ledger > div { grid-template-columns: 1fr; gap: 5px; }
+  .evidence-links { grid-template-columns: 1fr; }
   .skill-categories { overflow-x: auto; justify-content: flex-start; scrollbar-width: none; }
   .skill-categories button { min-width: 110px; }
   .skill-grid { grid-template-columns: 1fr; padding: 16px; }
@@ -494,6 +533,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .timeline-card h3 { font-size: 1.45rem; }
   .contact-shell { gap: 24px; padding-block: 34px; }
   .contact-copy h2 { font-size: 3rem; }
+  .contact-actions > a, .contact-actions > button { grid-template-columns: 40px minmax(0,1fr) auto; }
   .email-link { grid-template-columns: 36px minmax(0,1fr) auto; }
   .email-link > span:nth-child(2) { overflow: hidden; font-size: 10px; text-overflow: ellipsis; }
   .contact-form { padding: 18px; }
@@ -507,6 +547,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .terminal-bar > span:nth-child(2) { display: none; }
   .fact-grid { grid-template-columns: 1fr; }
   .fact-card { min-height: 132px; }
+  .proof-ledger > div { grid-template-columns: 1fr; gap: 5px; }
   .project-panel { grid-template-rows: 225px 1fr; }
   .binary-stream { display: none; }
   .contact-copy h2 { font-size: 2.75rem; }

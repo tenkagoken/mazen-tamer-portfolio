@@ -1,12 +1,28 @@
 import { useEffect, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowUpRight, Code, GithubLogo, Stack, X } from '@phosphor-icons/react'
-import type { Project } from '../data/portfolio'
+import { ArrowUpRight, Code, GithubLogo, LinkSimple, SealCheck, Stack, X } from '@phosphor-icons/react'
+import {
+  getProjectDisplayNumber,
+  isFeaturedProject,
+  profile,
+  type ClaimKind,
+  type Project,
+} from '../data/portfolio'
+import { resolveEvidenceUrl, resolveProjectRepositoryUrl } from '../lib/github'
 
 interface ProjectModalProps {
   project: Project | null
   onClose: () => void
 }
+
+const claimLabels: Record<ClaimKind, string> = {
+  contribution: 'Contribution',
+  decision: 'Technical decision',
+  result: 'Verified result',
+  limitation: 'Known limitation',
+}
+
+const claimOrder: readonly ClaimKind[] = ['contribution', 'decision', 'result', 'limitation']
 
 export function ProjectModal({ project, onClose }: ProjectModalProps) {
   const panelRef = useRef<HTMLDivElement>(null)
@@ -67,7 +83,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             transition={{ duration: .24 }}
           >
             <div className="modal-topbar">
-              <span>{project.number} / repository detail</span>
+              <span>{getProjectDisplayNumber(project)} / repository detail</span>
               <button ref={closeRef} type="button" onClick={onClose} aria-label="Close project details"><X size={19} weight="bold" /></button>
             </div>
 
@@ -77,47 +93,54 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                   <p>{project.repoName}</p>
                   <h3 id={`modal-title-${project.id}`}>{project.title}</h3>
                 </div>
-                {project.status && <span className="modal-status"><i />{project.status}</span>}
+                <span className={project.featured ? 'modal-status' : 'modal-status archive-status'}>
+                  {project.featured ? <><SealCheck size={14} weight="fill" />verified</> : 'archive'}
+                </span>
               </header>
 
-              <p className="modal-overview">{project.overview}</p>
+              <p className="modal-overview">{project.summary}</p>
 
               <div className="modal-facts">
-                <div><Code size={17} weight="bold" /><span><small>Primary language</small>{project.primaryLanguage ?? 'Not detected'}</span></div>
+                <div><Code size={17} weight="bold" /><span><small>Primary language</small>{project.primaryLanguage}</span></div>
                 <div><Stack size={17} weight="bold" /><span><small>Categories</small>{project.categories.join(' · ')}</span></div>
               </div>
 
-              {project.media && (
-                <figure className="repository-media">
-                  <img src={project.media.src} alt={project.media.alt} loading="lazy" decoding="async" />
-                  <figcaption>Actual sprite sheet from the project repository</figcaption>
-                </figure>
+              {isFeaturedProject(project) ? (
+                <>
+                  <section className="modal-section">
+                    <p className="modal-label">Claim ledger</p>
+                    <dl className="claim-ledger">
+                      {claimOrder.map((kind) => (
+                        <div key={kind}>
+                          <dt>{claimLabels[kind]}</dt>
+                          <dd>{project.claims[kind].text}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </section>
+
+                  <section className="modal-section">
+                    <p className="modal-label">Commit-pinned evidence</p>
+                    <p className="verified-commit">Verified at <code>{project.verifiedCommit.slice(0, 12)}</code></p>
+                    <div className="evidence-links">
+                      {project.evidence.map((evidence) => (
+                        <a key={evidence.id} href={resolveEvidenceUrl(profile.githubUsername, project, evidence)} target="_blank" rel="noreferrer">
+                          <LinkSimple size={15} weight="bold" /><span><strong>{evidence.label}</strong><small>{evidence.kind}</small></span><ArrowUpRight size={13} weight="bold" />
+                        </a>
+                      ))}
+                    </div>
+                  </section>
+                </>
+              ) : (
+                <p className="archive-note">This project remains in the public archive. Featured proof briefs are reserved for repositories reviewed at a pinned commit.</p>
               )}
 
-              {!!project.whatItDoes.length && (
-                <section className="modal-section">
-                  <p className="modal-label">What it does</p>
-                  <ul>{project.whatItDoes.map((item) => <li key={item}>{item}</li>)}</ul>
-                </section>
-              )}
+              <section className="modal-section">
+                <p className="modal-label">Technology</p>
+                <div className="modal-tech">{project.technologies.map((item) => <span key={item}>{item}</span>)}</div>
+              </section>
 
-              {!!project.highlights.length && (
-                <section className="modal-section">
-                  <p className="modal-label">Technical highlights</p>
-                  <div className="highlight-grid">{project.highlights.map((item) => <span key={item}>{item}</span>)}</div>
-                </section>
-              )}
-
-              {!!project.technologies.length && (
-                <section className="modal-section">
-                  <p className="modal-label">Technology</p>
-                  <div className="modal-tech">{project.technologies.map((item) => <span key={item}>{item}</span>)}</div>
-                </section>
-              )}
-
-              {project.evidenceNote && <p className="evidence-note">{project.evidenceNote}</p>}
-
-              <a className="button button-primary modal-repo-link" href={project.repository} target="_blank" rel="noreferrer">
+              <a className="button button-primary modal-repo-link" href={resolveProjectRepositoryUrl(profile.githubUsername, project)} target="_blank" rel="noreferrer">
                 <GithubLogo size={17} weight="bold" /> View repository <ArrowUpRight size={15} weight="bold" />
               </a>
             </div>

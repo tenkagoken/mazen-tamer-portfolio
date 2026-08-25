@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowDown, ArrowUpRight, EnvelopeSimple, GithubLogo } from '@phosphor-icons/react'
 import { profile, projects } from '../data/portfolio'
+import { resolveGitHubProfileUrl } from '../lib/github'
 
 const terminalScenes = [
   { command: 'whoami', lines: ['Mazen Eladawy', 'CS student · software builder'] },
@@ -9,15 +10,15 @@ const terminalScenes = [
   { command: 'focus --show', lines: ['algorithms / web / games / systems'] },
 ]
 
-export function Hero() {
+export function Hero({ documentVisible }: { documentVisible: boolean }) {
   const reduceMotion = useReducedMotion()
   const [scene, setScene] = useState(0)
 
   useEffect(() => {
-    if (reduceMotion) return
+    if (reduceMotion || !documentVisible) return
     const timer = window.setInterval(() => setScene((value) => (value + 1) % terminalScenes.length), 3200)
     return () => window.clearInterval(timer)
-  }, [reduceMotion])
+  }, [documentVisible, reduceMotion])
 
   const active = terminalScenes[scene]
 
@@ -54,8 +55,8 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25, duration: 0.6 }}
         >
-          I’m {profile.displayName} — a CS undergraduate exploring the space between algorithms,
-          full-stack software, low-level systems, and game development.
+          I’m {profile.displayName} — a CS undergraduate building across algorithms, software design,
+          low-level systems, and game engineering.
         </motion.p>
 
         <motion.div
@@ -65,7 +66,7 @@ export function Hero() {
           transition={{ delay: 0.35 }}
         >
           <a className="button button-primary" href="#projects">Explore my work <ArrowDown size={17} weight="bold" /></a>
-          <a className="button button-quiet" href={profile.githubUrl} target="_blank" rel="noreferrer">
+          <a className="button button-quiet" href={resolveGitHubProfileUrl(profile.githubUsername)} target="_blank" rel="noreferrer">
             <GithubLogo size={17} weight="bold" /> GitHub <ArrowUpRight size={14} weight="bold" />
           </a>
           <a className="icon-link" href={`mailto:${profile.email}`} aria-label="Email Mazen"><EnvelopeSimple size={19} weight="bold" /></a>
@@ -111,7 +112,7 @@ export function Hero() {
         </div>
       </motion.div>
 
-      <a className="scroll-cue" href="#about">
+      <a className="scroll-cue" href="#projects">
         <span>Scroll to inspect</span><i aria-hidden="true" />
       </a>
     </section>

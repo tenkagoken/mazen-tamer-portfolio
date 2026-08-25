@@ -1,14 +1,23 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowRight, ArrowUpRight, GithubLogo, MagnifyingGlass } from '@phosphor-icons/react'
-import { featuredProjects, profile, projectFilters, projects, type Project } from '../data/portfolio'
+import { ArrowRight, ArrowUpRight, GithubLogo, MagnifyingGlass, SealCheck } from '@phosphor-icons/react'
+import {
+  featuredProjects,
+  getProjectDisplayNumber,
+  profile,
+  projectFilters,
+  projects,
+  type Project,
+  type ProjectCategory,
+} from '../data/portfolio'
+import { resolveGitHubProfileUrl, resolveProjectRepositoryUrl } from '../lib/github'
 import { ProjectModal } from './ProjectModal'
 import { ProjectVisual } from './ProjectVisual'
 import { SectionHeading } from './SectionHeading'
 
-export function Projects() {
+export function Projects({ documentVisible = true }: { documentVisible?: boolean }) {
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const [filter, setFilter] = useState<(typeof projectFilters)[number]>('All')
+  const [filter, setFilter] = useState<'All' | ProjectCategory>('All')
   const [modalProject, setModalProject] = useState<Project | null>(null)
   const tabsRef = useRef<Array<HTMLButtonElement | null>>([])
   const project = featuredProjects[selectedIndex]
@@ -21,7 +30,7 @@ export function Projects() {
   const closeModal = useCallback(() => setModalProject(null), [])
 
   const onTabKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
-    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp' && event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return
+    if (!['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(event.key)) return
     event.preventDefault()
     const forward = event.key === 'ArrowDown' || event.key === 'ArrowRight'
     const next = forward ? (index + 1) % featuredProjects.length : (index - 1 + featuredProjects.length) % featuredProjects.length
@@ -33,13 +42,13 @@ export function Projects() {
     <section id="projects" className="section-shell content-section projects-section" aria-labelledby="projects-heading">
       <SectionHeading
         id="projects-heading"
-        eyebrow="02 / GitHub work"
-        title="A repository is where the thinking becomes visible."
-        copy={`${projects.length} selected public repositories spanning algorithms, C# software design, low-level systems, web applications, and game development—presented from the code outward.`}
+        eyebrow="01 / Verified work"
+        title="Five projects, traced back to the source."
+        copy={`${projects.length} selected public repositories spanning algorithms, C# software design, low-level systems, web interfaces, and game development. Featured claims link to the exact commit and file that supports them.`}
       />
 
       <div className="project-subhead">
-        <p>Featured projects</p><span>{String(featuredProjects.length).padStart(2, '0')} deep dives</span>
+        <p>Featured projects</p><span>{String(featuredProjects.length).padStart(2, '0')} evidence-backed deep dives</span>
       </div>
 
       <div className={`project-workbench accent-${project.accent}`}>
@@ -58,9 +67,9 @@ export function Projects() {
               onClick={() => setSelectedIndex(index)}
               onKeyDown={(event) => onTabKeyDown(event, index)}
             >
-              <span>{item.number}</span>
+              <span>{getProjectDisplayNumber(item)}</span>
               <span><strong>{item.shortTitle}</strong><small>{item.primaryLanguage}</small></span>
-              {item.status && <i>WIP</i>}
+              <SealCheck size={15} weight="fill" aria-label="Commit verified" />
             </button>
           ))}
         </div>
@@ -77,18 +86,18 @@ export function Projects() {
             exit={{ opacity: 0, x: -14, pointerEvents: 'none' }}
             transition={{ duration: .28 }}
           >
-            <ProjectVisual id={project.id} />
+            <ProjectVisual id={project.id} documentVisible={documentVisible} />
             <div className="project-info">
               <div className="project-meta">
                 <span>{project.categories.join(' · ')}</span>
-                {project.status && <span className="status-chip"><i /> {project.status}</span>}
+                <span className="verified-chip"><SealCheck size={13} weight="fill" /> Source verified</span>
               </div>
               <h3>{project.title}</h3>
               <p>{project.summary}</p>
-              <div className="concept-list">{project.concepts.map((concept) => <span key={concept}>{concept}</span>)}</div>
+              <div className="concept-list">{project.technologies.slice(0, 4).map((technology) => <span key={technology}>{technology}</span>)}</div>
               <div className="project-actions featured-actions">
-                <button type="button" onClick={() => setModalProject(project)}><MagnifyingGlass size={17} weight="bold" /> Inspect project</button>
-                <a href={project.repository} target="_blank" rel="noreferrer"><GithubLogo size={17} weight="bold" /> View repository <ArrowUpRight size={14} weight="bold" /></a>
+                <button type="button" onClick={() => setModalProject(project)}><MagnifyingGlass size={17} weight="bold" /> Inspect evidence</button>
+                <a href={resolveProjectRepositoryUrl(profile.githubUsername, project)} target="_blank" rel="noreferrer"><GithubLogo size={17} weight="bold" /> View repository <ArrowUpRight size={14} weight="bold" /></a>
               </div>
             </div>
           </motion.article>
@@ -120,10 +129,10 @@ export function Projects() {
               exit={{ opacity: 0, y: -8, pointerEvents: 'none' }}
               aria-label={`Open details for ${item.title}`}
             >
-              <span className="archive-number">{item.number}</span>
+              <span className="archive-number">{getProjectDisplayNumber(item)}</span>
               <span className="archive-title"><strong>{item.title}</strong><small>{item.repoName}</small></span>
               <span className="archive-category">{item.categories[0]}</span>
-              <span className="archive-language"><i />{item.primaryLanguage ?? 'No code'}</span>
+              <span className="archive-language"><i />{item.primaryLanguage}</span>
               <span className="archive-open">Details <ArrowRight size={15} weight="bold" /></span>
             </motion.button>
           ))}
@@ -131,8 +140,8 @@ export function Projects() {
       </motion.div>
 
       <div className="github-project-cta">
-        <div><GithubLogo size={22} weight="bold" /><span><small>Continue exploring</small>See the source, file history, and latest updates on GitHub.</span></div>
-        <a className="button button-quiet" href={profile.githubUrl} target="_blank" rel="noreferrer">Explore more on GitHub <ArrowUpRight size={15} weight="bold" /></a>
+        <div><GithubLogo size={22} weight="bold" /><span><small>Continue exploring</small>See source, history, and current repository state on GitHub.</span></div>
+        <a className="button button-quiet" href={resolveGitHubProfileUrl(profile.githubUsername)} target="_blank" rel="noreferrer">Explore more on GitHub <ArrowUpRight size={15} weight="bold" /></a>
       </div>
 
       <ProjectModal project={modalProject} onClose={closeModal} />

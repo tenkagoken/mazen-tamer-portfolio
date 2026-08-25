@@ -1,31 +1,34 @@
-import { FormEvent, useState } from 'react'
-import { ArrowUpRight, Briefcase, Check, EnvelopeSimple, GithubLogo, PaperPlaneTilt } from '@phosphor-icons/react'
+import { useEffect, useRef, useState } from 'react'
+import { ArrowUpRight, Briefcase, Check, Copy, EnvelopeSimple, FilePdf } from '@phosphor-icons/react'
 import { motion } from 'framer-motion'
 import { profile } from '../data/portfolio'
-import { buildMailtoUrl } from '../lib/contact'
+import { writeEmailToClipboard } from '../lib/clipboard'
+
+const resumeUrl = `${import.meta.env.BASE_URL}Mazen-Eladawy-Resume.pdf`
 
 export function Contact() {
-  const [sent, setSent] = useState(false)
+  const [copyState, setCopyState] = useState<'idle' | 'copied' | 'manual'>('idle')
+  const manualInputRef = useRef<HTMLInputElement>(null)
 
-  const submit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    const name = String(data.get('name') ?? '')
-    const email = String(data.get('email') ?? '')
-    const message = String(data.get('message') ?? '')
-    setSent(true)
-    window.location.href = buildMailtoUrl(name, email, message)
-    window.setTimeout(() => setSent(false), 1500)
+  useEffect(() => {
+    if (copyState !== 'manual') return
+    manualInputRef.current?.focus()
+    manualInputRef.current?.select()
+  }, [copyState])
+
+  const copyEmail = async () => {
+    const copied = await writeEmailToClipboard(profile.email, navigator.clipboard)
+    if (!copied) {
+      setCopyState('manual')
+      return
+    }
+    setCopyState('copied')
+    window.setTimeout(() => setCopyState('idle'), 1800)
   }
 
   return (
     <section id="contact" className="section-shell content-section contact-section" aria-labelledby="contact-heading">
-      <motion.div
-        className="contact-shell"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-      >
+      <motion.div className="contact-shell" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}>
         <div className="contact-copy">
           <p className="eyebrow"><span aria-hidden="true">//</span> 05 / Contact</p>
           <h2 id="contact-heading">Have a problem worth building for?</h2>
@@ -33,40 +36,36 @@ export function Contact() {
             I’m looking for internships, technical projects, and engineering challenges where I can
             contribute, learn fast, and ship useful work.
           </p>
-          <a className="email-link" href={`mailto:${profile.email}`}>
-            <span><EnvelopeSimple size={19} weight="bold" /></span>
-            <span><small>Email me directly</small>{profile.email}</span>
-            <ArrowUpRight size={18} weight="bold" />
-          </a>
-          <div className="social-row">
-            <a href={profile.githubUrl} target="_blank" rel="noreferrer"><GithubLogo size={17} weight="bold" /> GitHub</a>
-            {profile.linkedinUrl ? (
-              <a href={profile.linkedinUrl} target="_blank" rel="noreferrer"><Briefcase size={17} weight="bold" /> LinkedIn</a>
-            ) : (
-              <span title="Add a verified URL in src/data/portfolio.ts"><Briefcase size={17} weight="bold" /> LinkedIn · URL pending</span>
-            )}
-          </div>
         </div>
 
-        <form className="contact-form" onSubmit={submit}>
-          <div className="form-heading"><span>New message</span><i>mailto fallback</i></div>
-          <label>
-            <span>Your name</span>
-            <input name="name" type="text" autoComplete="name" maxLength={80} placeholder="How should I address you?" required />
-          </label>
-          <label>
-            <span>Your email</span>
-            <input name="email" type="email" autoComplete="email" maxLength={254} placeholder="you@company.com" required />
-          </label>
-          <label>
-            <span>What are you building?</span>
-            <textarea name="message" rows={5} maxLength={2000} placeholder="Tell me about the project, role, or challenge…" required />
-          </label>
-          <button type="submit" className="button button-primary" disabled={sent}>
-            {sent ? <><Check size={17} weight="bold" /> Opening email app…</> : <>Compose message <PaperPlaneTilt size={16} weight="bold" /></>}
+        <div className="contact-actions" aria-label="Contact and résumé links">
+          <a href={`mailto:${profile.email}`}>
+            <span><EnvelopeSimple size={20} weight="bold" /></span>
+            <span><small>Email</small>{profile.email}</span>
+            <ArrowUpRight size={17} weight="bold" />
+          </a>
+          <button type="button" onClick={copyEmail}>
+            <span>{copyState === 'copied' ? <Check size={20} weight="bold" /> : <Copy size={20} weight="bold" />}</span>
+            <span><small>Copy email</small><span aria-live="polite">{copyState === 'copied' ? 'Copied to clipboard' : copyState === 'manual' ? 'Select and copy the address below' : 'Ready for your address book'}</span></span>
+            <span aria-hidden="true">{copyState === 'copied' ? 'Done' : 'Copy'}</span>
           </button>
-          <p className="form-note">Submitting opens your email app. No data is stored by this website.</p>
-        </form>
+          {copyState === 'manual' && (
+            <label className="manual-copy">
+              <span>Copy manually</span>
+              <input ref={manualInputRef} readOnly value={profile.email} onFocus={(event) => event.currentTarget.select()} />
+            </label>
+          )}
+          <a href={profile.linkedinUrl} target="_blank" rel="noreferrer">
+            <span><Briefcase size={20} weight="bold" /></span>
+            <span><small>LinkedIn</small>View professional profile</span>
+            <ArrowUpRight size={17} weight="bold" />
+          </a>
+          <a href={resumeUrl} target="_blank" rel="noreferrer">
+            <span><FilePdf size={20} weight="bold" /></span>
+            <span><small>Résumé</small>Open verified PDF</span>
+            <ArrowUpRight size={17} weight="bold" />
+          </a>
+        </div>
       </motion.div>
     </section>
   )

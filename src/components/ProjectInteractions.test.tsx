@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 import { ProjectModal } from './ProjectModal'
 import { Projects } from './Projects'
-import { projects, type Project } from '../data/portfolio'
+import { projectFilters, projects, type Project } from '../data/portfolio'
 
 function ModalHarness() {
   const [project, setProject] = useState<Project | null>(null)
@@ -31,8 +31,12 @@ describe('project interactions', () => {
     expect(tabs[0]).toHaveFocus()
     expect(tabs[0]).toHaveAttribute('aria-selected', 'true')
 
-    await user.click(screen.getByRole('button', { name: 'Web' }))
-    expect(screen.getByText('Showing 2 of 7')).toBeInTheDocument()
+    for (const filter of projectFilters) {
+      const exactName = new RegExp(`^${filter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`)
+      await user.click(screen.getByRole('button', { name: exactName }))
+      const count = filter === 'All' ? projects.length : projects.filter((project) => project.categories.includes(filter)).length
+      expect(screen.getByText(`Showing ${count} of ${projects.length}`)).toBeInTheDocument()
+    }
   })
 
   it('locks scroll, traps focus, closes with Escape, and restores the opener', async () => {
@@ -44,6 +48,15 @@ describe('project interactions', () => {
     expect(screen.getByRole('dialog')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Close project details' })).toHaveFocus()
     expect(document.body.style.overflow).toBe('hidden')
+    expect(screen.getAllByRole('term').map((term) => term.textContent)).toEqual([
+      'Contribution', 'Technical decision', 'Verified result', 'Known limitation',
+    ])
+    expect(screen.getByRole('link', { name: /technical readme/i })).toHaveAttribute(
+      'href',
+      expect.stringContaining(`/blob/${projects[0].featured ? projects[0].verifiedCommit : ''}/README.md`),
+    )
+    expect(screen.getByRole('link', { name: /technical readme/i })).toHaveAttribute('target', '_blank')
+    expect(screen.getByRole('link', { name: /technical readme/i })).toHaveAttribute('rel', 'noreferrer')
 
     await user.tab({ shift: true })
     expect(screen.getByRole('link', { name: /view repository/i })).toHaveFocus()

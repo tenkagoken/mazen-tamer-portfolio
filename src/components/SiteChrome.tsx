@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, useMotionValueEvent, useScroll, useSpring } from 'framer-motion'
 import { ArrowUp, GithubLogo } from '@phosphor-icons/react'
 import { profile } from '../data/portfolio'
+import { resolveGitHubProfileUrl } from '../lib/github'
 
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll()
@@ -31,7 +32,7 @@ export function Footer() {
     <footer className="footer section-shell">
       <div><span className="brand-mark">ME</span><p>Designed & built by {profile.displayName}.</p></div>
       <p>© {new Date().getFullYear()} · Cairo, Egypt</p>
-      <a href={profile.githubUrl} target="_blank" rel="noreferrer"><GithubLogo size={17} weight="bold" /> @{profile.githubUsername}</a>
+      <a href={resolveGitHubProfileUrl(profile.githubUsername)} target="_blank" rel="noreferrer"><GithubLogo size={17} weight="bold" /> @{profile.githubUsername}</a>
     </footer>
   )
 }

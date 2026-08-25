@@ -1,12 +1,13 @@
 import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import type { ProjectId } from '../data/portfolio'
+import { shouldRunProjectAnimation } from '../lib/motion'
 
-export function ProjectVisual({ id }: { id: ProjectId }) {
+export function ProjectVisual({ id, documentVisible }: { id: ProjectId; documentVisible: boolean }) {
   const visualRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(visualRef, { amount: 0.15 })
   const reduceMotion = useReducedMotion()
-  const shouldAnimate = isInView && !reduceMotion
+  const shouldAnimate = shouldRunProjectAnimation({ documentVisible, inView: isInView, reduceMotion: Boolean(reduceMotion) })
 
   if (id === 'huffman') {
     return (
