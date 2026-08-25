@@ -128,7 +128,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .story-lead span { color: var(--blue); font-style: italic; }
 .about-story > p { max-width: 520px; margin: 0 0 15px; color: var(--muted-strong); font-size: 1rem; line-height: 1.72; }
 .languages-card { margin-top: auto; padding-top: 26px; }
-.languages-card > p { color: var(--muted); font: 700 9px/1 "Cascadia Code", Consolas, monospace; letter-spacing: .12em; text-transform: uppercase; }
+.languages-card > p { margin: 0 0 12px; color: var(--muted); font: 700 9px/1 "Cascadia Code", Consolas, monospace; letter-spacing: .12em; text-transform: uppercase; }
 .languages-card > div { display: flex; gap: 8px; }
 .languages-card span { min-width: 120px; padding: 10px 11px; color: var(--muted); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 10px; }
 .languages-card strong { display: block; margin-bottom: 2px; color: var(--foreground); font-size: 12px; }
@@ -351,7 +351,11 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .related-projects b { color: var(--blue); font: 700 8px "Cascadia Code", Consolas, monospace; }
 .skill-project-link { min-height: 44px; display: inline-flex; align-items: center; gap: 7px; margin-top: 10px; color: var(--foreground); font-size: 10px; font-weight: 750; }
 
-/* Journey */
+/* Engineering path merged into About */
+.about-engineering-path { margin-top: 88px; padding-top: 72px; border-top: 1px solid var(--border-strong); }
+.about-engineering-path-heading { max-width: 760px; margin-bottom: 52px; }
+.about-engineering-path-heading h3 { margin: 14px 0 15px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.5rem,5vw,4.5rem); font-weight: 400; line-height: 1; letter-spacing: -.045em; }
+.about-engineering-path-heading > p:last-child { max-width: 630px; margin: 0; color: var(--muted-strong); font-size: 1rem; line-height: 1.7; }
 .timeline { max-width: 960px; position: relative; margin-inline: auto; }
 .timeline::before, .timeline-progress { width: 1px; position: absolute; left: 172px; top: 0; bottom: 0; transform-origin: top; }
 .timeline::before { content: ""; background: var(--border); }
@@ -526,6 +530,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .skill-grid button { min-height: 60px; }
   .skill-context { padding: 25px 18px; }
   .related-projects { grid-template-columns: 1fr; }
+  .about-engineering-path { margin-top: 62px; padding-top: 54px; }
+  .about-engineering-path-heading { margin-bottom: 38px; }
   .timeline::before, .timeline-progress { left: 18px; }
   .timeline-item { min-height: 132px; padding-left: 54px; }
   .timeline-node { width: 36px; height: 36px; left: 0; }

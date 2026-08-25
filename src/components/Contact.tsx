@@ -30,7 +30,7 @@ export function Contact() {
     <section id="contact" className="section-shell content-section contact-section" aria-labelledby="contact-heading">
       <motion.div className="contact-shell" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}>
         <div className="contact-copy">
-          <p className="eyebrow"><span aria-hidden="true">//</span> 05 / Contact</p>
+          <p className="eyebrow"><span aria-hidden="true">//</span> 04 / Contact</p>
           <h2 id="contact-heading">Have a problem worth building for?</h2>
           <p>
             I’m looking for internships, technical projects, and engineering challenges where I can

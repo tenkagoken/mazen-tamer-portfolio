@@ -4,10 +4,10 @@ Reviewed: 2026-08-25 (Africa/Cairo)
 
 ## Content and evidence
 
-- [x] Canonical data contains six selected repositories: five featured and CPU Scheduler in the archive.
+- [x] Canonical data contains seven selected repositories: five featured, plus LeBaladna Survey Helper and CPU Scheduler in the archive.
 - [x] Examination Management System, Library Management System, and C# Windows Forms Platformer appear in both the featured workbench and all-public archive.
-- [x] Knight's End and both LeBaladna survey-helper slug variants are guarded by tests and absent from rendered copy, skills, journey, and résumé text.
-- [x] Skills reflect repository-backed C++, C#, .NET, JavaScript, MIPS Assembly, Windows Forms, GDI+, OOP, collections, generics, events/delegates, file and binary I/O, bit packing, collision, and state-machine work.
+- [x] Knight's End remains guarded by tests and absent from rendered copy; the surviving `lebaladnas-survey-helper` repository is represented once.
+- [x] Skills reflect repository-backed C++, C#, .NET, PHP, MySQL, JavaScript, MIPS Assembly, Windows Forms, GDI+, Chart.js, OOP, relational data modeling, role-based access control, CSRF protection, collections, generics, events/delegates, file and binary I/O, bit packing, collision, and state-machine work.
 - [x] All five README upgrades are public at the verified commit.
 - [x] All 15 commit-pinned README/source/project-file destinations opened successfully in the in-app browser.
 
@@ -22,7 +22,7 @@ Reviewed: 2026-08-25 (Africa/Cairo)
 
 ## Application and interaction QA
 
-- [x] Recruiter order is Hero → Projects → About → Skills → Journey → Contact.
+- [x] Recruiter order is Hero → Projects → About (including the engineering path) → Skills → Contact, with no standalone Journey section.
 - [x] Featured briefings render contribution → technical decision → verified result → known limitation → evidence.
 - [x] Project tabs wrap with arrow keys; modal initial focus, focus trap, Escape close, backdrop close, body lock, and focus restoration pass component tests.
 - [x] Email, LinkedIn, résumé, clipboard success, missing/denied clipboard manual recovery, and unexpected clipboard failures are covered.

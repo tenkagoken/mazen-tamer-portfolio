@@ -6,6 +6,7 @@ export type ProjectId =
   | 'exam-management'
   | 'library-management'
   | 'windows-game'
+  | 'lebaladna-survey'
   | 'cpu-scheduler'
 
 export type ProjectCategory = 'Algorithms' | 'Systems' | 'Software Engineering' | 'Game Development' | 'Web'
@@ -62,7 +63,7 @@ export interface Skill {
   projects: readonly ProjectId[]
 }
 
-export interface JourneyEntry {
+export interface EngineeringPathEntry {
   label: string
   title: string
   text: string
@@ -73,7 +74,7 @@ export interface PortfolioDataInput {
   profile: typeof rawProfile
   projects: readonly Project[]
   skillGroups: Readonly<Record<string, readonly Skill[]>>
-  journey: readonly JourneyEntry[]
+  engineeringPath: readonly EngineeringPathEntry[]
 }
 
 export interface EvidenceValidationFinding {
@@ -124,10 +125,8 @@ const REQUIRED_FEATURED_IDS: readonly ProjectId[] = [
 const DENIED_REPOSITORIES = new Set([
   'knights-end',
   'knightsend',
-  'lebaladnas-survey-helper',
-  'lebaladna-survey-helper',
 ])
-const DENIED_COPY = [/knight(?:'|’)?s?\s*end/i, /lebaladna/i, /survey\s+(?:helper|platform|system)/i]
+const DENIED_COPY = [/knight(?:'|’)?s?\s*end/i]
 
 const rawProfile = {
   displayName: 'Mazen Eladawy',
@@ -232,6 +231,12 @@ const rawProjects: readonly Project[] = [
     ],
   },
   {
+    id: 'lebaladna-survey', repoName: 'lebaladnas-survey-helper', title: 'LeBaladna Survey Helper', shortTitle: 'LeBaladna Survey',
+    primaryLanguage: 'PHP', languages: ['PHP', 'JavaScript', 'SQL', 'HTML', 'CSS'], technologies: ['PHP', 'MySQL', 'PDO', 'JavaScript', 'Chart.js', 'Role-Based Access Control'],
+    categories: ['Web', 'Software Engineering', 'Systems'], featured: false, accent: 'cyan',
+    summary: 'A role-based PHP and MySQL survey platform with questionnaire authoring, member responses, analytics dashboards, and CSV/PDF export.',
+  },
+  {
     id: 'cpu-scheduler', repoName: 'cpu-scheduling-algorithm-simulation', title: 'CPU Scheduling Visualizer', shortTitle: 'CPU Scheduler',
     primaryLanguage: 'JavaScript', languages: ['JavaScript', 'HTML', 'CSS'], technologies: ['JavaScript', 'HTML', 'CSS', 'Process Scheduling'],
     categories: ['Algorithms', 'Systems', 'Web'], featured: false, accent: 'violet',
@@ -246,13 +251,17 @@ const rawSkillGroups = {
     { name: 'C++', projects: ['huffman'] },
     { name: 'C#', projects: ['exam-management', 'library-management', 'windows-game'] },
     { name: '.NET', projects: ['exam-management', 'library-management', 'windows-game'] },
-    { name: 'JavaScript', projects: ['cpu-scheduler'] },
+    { name: 'PHP', projects: ['lebaladna-survey'] },
+    { name: 'JavaScript', projects: ['lebaladna-survey', 'cpu-scheduler'] },
     { name: 'MIPS Assembly', projects: ['cipher'] },
   ],
   Web: [
-    { name: 'HTML', projects: ['cpu-scheduler'] },
-    { name: 'CSS', projects: ['cpu-scheduler'] },
-    { name: 'JavaScript', projects: ['cpu-scheduler'] },
+    { name: 'PHP', projects: ['lebaladna-survey'] },
+    { name: 'MySQL', projects: ['lebaladna-survey'] },
+    { name: 'HTML', projects: ['lebaladna-survey', 'cpu-scheduler'] },
+    { name: 'CSS', projects: ['lebaladna-survey', 'cpu-scheduler'] },
+    { name: 'JavaScript', projects: ['lebaladna-survey', 'cpu-scheduler'] },
+    { name: 'Chart.js', projects: ['lebaladna-survey'] },
   ],
   'Game Development': [
     { name: 'Windows Forms', projects: ['windows-game'] },
@@ -262,7 +271,7 @@ const rawSkillGroups = {
     { name: 'State Machines', projects: ['windows-game'] },
   ],
   Engineering: [
-    { name: 'Object-Oriented Programming', projects: ['exam-management', 'library-management', 'windows-game'] },
+    { name: 'Object-Oriented Programming', projects: ['exam-management', 'library-management', 'windows-game', 'lebaladna-survey'] },
     { name: 'File I/O', projects: ['huffman', 'exam-management'] },
     { name: 'Events & Delegates', projects: ['exam-management'] },
     { name: 'Generics', projects: ['exam-management', 'library-management'] },
@@ -270,6 +279,9 @@ const rawSkillGroups = {
     { name: 'Algorithms', projects: ['huffman', 'cipher', 'cpu-scheduler'] },
     { name: 'Binary I/O', projects: ['huffman'] },
     { name: 'Bit Packing', projects: ['huffman'] },
+    { name: 'Relational Data Modeling', projects: ['lebaladna-survey'] },
+    { name: 'Role-Based Access Control', projects: ['lebaladna-survey'] },
+    { name: 'CSRF Protection', projects: ['lebaladna-survey'] },
   ],
   Tools: [
     { name: 'Git', projects: allProjectIds },
@@ -279,12 +291,13 @@ const rawSkillGroups = {
   ],
 } satisfies Record<string, readonly Skill[]>
 
-const rawJourney: readonly JourneyEntry[] = [
+const rawEngineeringPath: readonly EngineeringPathEntry[] = [
   { label: 'Foundation', title: 'Computer Science Degree', text: `Studying at ${rawProfile.university}. Expected graduation: ${rawProfile.graduation}.` },
   { label: 'Experience · 2023–2024', title: 'IGCSE Mathematics Tutor', text: 'Taught O Level mathematics through structured explanations and step-by-step problem solving.' },
   { label: 'Algorithms', title: 'Compression & Scheduling', text: 'Implemented Huffman coding in C++ and six CPU scheduling simulations in JavaScript.', projects: ['huffman', 'cpu-scheduler'] },
   { label: 'Low level', title: 'Encryption in Assembly', text: 'Built a key-driven monoalphabetic cipher in MIPS Assembly.', projects: ['cipher'] },
   { label: 'Software design', title: 'Examination & Library Systems', text: 'Modeled two console systems in C# with OOP, collections, generics, events, and file handling.', projects: ['exam-management', 'library-management'] },
+  { label: 'Web platform', title: 'Survey Workflows & Analytics', text: 'Built role-based survey authoring, response collection, analytics, and export workflows with PHP, MySQL, JavaScript, and Chart.js.', projects: ['lebaladna-survey'] },
   { label: 'Game engineering', title: 'Custom Windows Forms Platformer', text: 'Built timer-driven rendering, collision, combat, and boss systems directly with C#, Windows Forms, and GDI+.', projects: ['windows-game'] },
 ]
 
@@ -370,6 +383,8 @@ export function validatePortfolioData(data: PortfolioDataInput): readonly Eviden
   }
   const scheduler = data.projects.find((project) => project.id === 'cpu-scheduler')
   if (!scheduler || scheduler.featured) addFinding(findings, 'archive set', 'cpu-scheduler', 'a present, non-featured archive project')
+  const survey = data.projects.find((project) => project.id === 'lebaladna-survey')
+  if (!survey || survey.featured) addFinding(findings, 'archive set', 'lebaladna-survey', 'a present, non-featured archive project')
 
   for (const [groupName, skills] of Object.entries(data.skillGroups)) {
     for (const skill of skills) {
@@ -378,18 +393,18 @@ export function validatePortfolioData(data: PortfolioDataInput): readonly Eviden
       }
     }
   }
-  for (const entry of data.journey) {
+  for (const entry of data.engineeringPath) {
     for (const projectId of entry.projects ?? []) {
-      if (!projectIds.has(projectId)) addFinding(findings, 'reference', `journey.${entry.title}`, 'only existing project IDs', projectId)
+      if (!projectIds.has(projectId)) addFinding(findings, 'reference', `engineeringPath.${entry.title}`, 'only existing project IDs', projectId)
     }
   }
-  if (DENIED_COPY.some((pattern) => pattern.test(JSON.stringify({ skillGroups: data.skillGroups, journey: data.journey })))) {
-    addFinding(findings, 'exclusion', 'skills or journey copy', 'no references to excluded or empty projects')
+  if (DENIED_COPY.some((pattern) => pattern.test(JSON.stringify({ skillGroups: data.skillGroups, engineeringPath: data.engineeringPath })))) {
+    addFinding(findings, 'exclusion', 'skills or engineering path copy', 'no references to excluded projects')
   }
   return findings
 }
 
-export function assertPortfolioIntegrity(data: PortfolioDataInput = { profile: rawProfile, projects: rawProjects, skillGroups: rawSkillGroups, journey: rawJourney }) {
+export function assertPortfolioIntegrity(data: PortfolioDataInput = { profile: rawProfile, projects: rawProjects, skillGroups: rawSkillGroups, engineeringPath: rawEngineeringPath }) {
   const findings = validatePortfolioData(data)
   if (findings.length) throw new EvidenceValidationError(findings)
   return data
@@ -415,14 +430,13 @@ export const projectFilters: readonly ('All' | ProjectCategory)[] = deepFreeze([
 ])
 export const skillGroups = deepFreeze(accepted.skillGroups)
 export type SkillCategory = keyof typeof skillGroups
-export const journey = deepFreeze(accepted.journey)
+export const engineeringPath = deepFreeze(accepted.engineeringPath)
 
 export const navigation = deepFreeze([
   { id: 'home', label: 'Home' },
   { id: 'projects', label: 'Projects' },
   { id: 'about', label: 'About' },
   { id: 'skills', label: 'Skills' },
-  { id: 'journey', label: 'Journey' },
   { id: 'contact', label: 'Contact' },
 ] as const)
 

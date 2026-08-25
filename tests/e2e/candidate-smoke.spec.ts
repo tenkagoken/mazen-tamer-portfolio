@@ -12,12 +12,15 @@ test('candidate can inspect proof, open contact routes, and retrieve the approve
   await expect(page.locator('main')).toBeVisible()
 
   const sectionIds = await page.locator('main > section').evaluateAll((sections) => sections.map((section) => section.id))
-  expect(sectionIds).toEqual(['home', 'projects', 'about', 'skills', 'journey', 'contact'])
+  expect(sectionIds).toEqual(['home', 'projects', 'about', 'skills', 'contact'])
 
-  const excludedCopy = (await page.locator('body').innerText()).toLowerCase()
-  expect(excludedCopy).not.toContain('knights end')
-  expect(excludedCopy).not.toContain('lebaladna')
-  expect(excludedCopy).not.toContain('survey helper')
+  const pageCopy = (await page.locator('body').innerText()).toLowerCase()
+  expect(pageCopy).not.toContain('knights end')
+  expect(pageCopy).toContain('lebaladna survey helper')
+  await expect(page.getByRole('button', { name: 'Open details for LeBaladna Survey Helper' })).toBeVisible()
+  await expect(page.locator('#about')).toContainText('Survey Workflows & Analytics')
+  await expect(page.locator('#journey')).toHaveCount(0)
+  await expect(page).toHaveTitle('Mazen Eladawy Software Engineering Portfolio')
 
   await page.getByRole('button', { name: /inspect evidence/i }).click()
   await expect(page.getByRole('dialog')).toBeVisible()
