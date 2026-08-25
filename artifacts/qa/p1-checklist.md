@@ -40,10 +40,8 @@ Reviewed: 2026-08-25 (Africa/Cairo)
 
 ## Remote release
 
-- [ ] Create `tenkagoken/mazen-tamer-portfolio` after GitHub sign-in.
-- [ ] Push `main`.
-- [ ] Select GitHub Actions as the Pages source.
-- [ ] Manually dispatch `Deploy portfolio to GitHub Pages`.
-- [ ] Open the final HTTPS candidate URL and record the live smoke result.
-
-Remote release remains intentionally blocked until the account owner signs in to GitHub. No Pages setting or workflow has been changed yet.
+- [x] Created public repository `tenkagoken/mazen-tamer-portfolio` without generated starter files.
+- [x] Pushed candidate commit `bc2447f2607b52683e52bb142b4cb7b30d4194c3` to `main`.
+- [x] Selected GitHub Actions as the Pages source with HTTPS enforced on the default domain.
+- [x] Manually dispatched `Deploy portfolio to GitHub Pages`; [run #1](https://github.com/tenkagoken/mazen-tamer-portfolio/actions/runs/32886065424) completed successfully (build 57s, deploy 10s).
+- [x] Opened the [final HTTPS site](https://tenkagoken.github.io/mazen-tamer-portfolio/) and repeated the live smoke: six repositories rendered, requested featured/archive coverage present, modal Escape and focus restoration passed, résumé PDF loaded, and the browser console remained clean.
